@@ -1,0 +1,1 @@
+export { MqttDecorator } from './mqtt-routing.decorators'
