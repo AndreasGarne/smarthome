@@ -1,33 +1,33 @@
 import mqtt from 'mqtt';
 import crypto from 'crypto';
+import { injectable, inject } from 'inversify';
 
 import { IConfiguration } from '../configuration';
-import { IIncomingTasmotaTopic, IRoutingInfo } from '../models';
+import { IRoutingInfo, IResolvedRoute } from '../models';
 import {
     ITasmotaController,
     TasmotaController,
     ILightController,
     LightController,
-} from './';
+} from '../controllers';
 import { MqttDecorator } from '../decorators';
-import { IResolvedRoute } from '../models/resolved-route.models';
+import { TYPES } from '../injection';
 
-export interface IMqttController { }
+export interface IMqttRouter { }
 
-export class MqttController implements IMqttController {
+@injectable()
+export class MqttRouter implements IMqttRouter {
     private mqttSubscriberClient: mqtt.MqttClient;
     private tasmotaController: ITasmotaController;
-    private lightController: ILightController;
     private routingInfo: IRoutingInfo[];
 
-    constructor(private config: IConfiguration) {
+    constructor(@inject(TYPES.IConfiguration) private readonly config: IConfiguration) {
         this.mqttSubscriberClient = mqtt.connect(config.MqttHost, {
             username: config.MqttUser,
             password: config.MqttPassword
         });
 
         this.tasmotaController = new TasmotaController();
-        this.lightController = new LightController();
         this.routingInfo = this.SetupRoutingData();
         // console.log(this.routingInfo);
 

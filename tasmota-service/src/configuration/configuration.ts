@@ -1,3 +1,5 @@
+import { injectable, inject } from 'inversify';
+
 export interface IConfiguration {
     MqttHost: string;
     MqttPort: string;
@@ -6,6 +8,7 @@ export interface IConfiguration {
     ReservedTopicPrefixes: string[];
 }
 
+@injectable()
 export class Configuration implements IConfiguration {
     public MqttHost: string;
     public MqttPort: string;

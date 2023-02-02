@@ -3,3 +3,4 @@ export { ITasmotaPowerState, IsTasmotaPowerState } from './tasmota-power-state.m
 export { ITasmotaLightState, IsTasmotaLightState } from './tasmota-light-state.models';
 export { ILwt } from './lwt.models';
 export { IRoutingInfo } from './routing-info.models';
+export { IResolvedRoute } from './resolved-route.models';

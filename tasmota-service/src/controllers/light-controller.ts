@@ -1,3 +1,5 @@
+import { injectable, inject } from 'inversify';
+
 import { IIncomingTasmotaTopic, IsTasmotaLightState, IsTasmotaPowerState, ITasmotaLightState } from '../models'
 import { MqttDecorator } from '../decorators'
 
@@ -9,6 +11,7 @@ export interface ILightController {
     HandleLWT(message: Buffer, deviceId: string, correlationId: string): void;
 }
 
+@injectable()
 export class LightController implements ILightController {
 
     @MqttDecorator.MqttRoute("stat/light/{id}/result")
