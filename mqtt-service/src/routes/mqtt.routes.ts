@@ -9,6 +9,10 @@ import {
     TasmotaController,
     ILightController,
     LightController,
+    IZigbeeBridgeController,
+    ZigbeeBridgeController,
+    IZigbeeDeviceController,
+    ZigbeeDeviceController
 } from '../controllers';
 import { MqttDecorator } from '../decorators';
 import { TYPES } from '../injection';
@@ -53,6 +57,11 @@ export class MqttRouter implements IMqttRouter {
                     console.log(`Failed to subscribe to smartbase. Error: ${err}`)
                 }
             });
+            this.mqttSubscriberClient.subscribe('+/zbbridge/+', function (err) {
+                if (err) {
+                    console.log(`Failed to subscribe to zbbridge. Error: ${err}`)
+                }
+            });
         });
     }
 
@@ -82,6 +91,8 @@ export class MqttRouter implements IMqttRouter {
                 console.log(`No matching route for topic: ${topic}`);
                 return;
             }
+
+            console.log(foundRoute);
 
             const routeToCall = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route);
             foundRoute && routeToCall && routeToCall(message, ...foundRoute.callProperties, guid);
@@ -132,6 +143,7 @@ export class MqttRouter implements IMqttRouter {
         const routingData: IRoutingInfo[] = [];
         const allRoutes = MqttDecorator.allMqttRoutes.keys();
         for (let route of allRoutes) {
+            console.log(route);
             routingData.push({
                 regex: this.GetRegexForRoute(route),
                 route: route,
