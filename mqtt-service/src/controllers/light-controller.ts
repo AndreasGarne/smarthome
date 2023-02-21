@@ -39,7 +39,8 @@ export class LightController implements ILightController {
             // console.log(deviceId);
             // console.log(correlationId);
             console.log("HandleLightStatusStateNotImplemented");
-
+            const messageJson = JSON.parse(message.toString());
+            console.log(messageJson);
         } catch {
 
         }
@@ -52,7 +53,8 @@ export class LightController implements ILightController {
             // console.log(deviceId);
             // console.log(correlationId);
             console.log("HandleLightTelemetryResultNotImplemented");
-
+            const messageJson = JSON.parse(message.toString());
+            console.log(messageJson);
         } catch {
 
         }
@@ -65,7 +67,8 @@ export class LightController implements ILightController {
             // console.log(deviceId);
             // console.log(correlationId);
             console.log("HandleLightTelemetryStateNotImplemented");
-
+            const messageJson = JSON.parse(message.toString());
+            console.log(messageJson);
         } catch {
 
         }
