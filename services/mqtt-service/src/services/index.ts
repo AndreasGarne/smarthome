@@ -1,0 +1,1 @@
+export { ILightService, LightService } from './light-service';

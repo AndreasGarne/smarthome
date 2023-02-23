@@ -1,0 +1,1 @@
+export { ILight } from './light-model';
