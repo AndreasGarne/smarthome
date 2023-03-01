@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { ILight } from "@smarthome/models";
-import Command from './../models/command-model';
+import Command from '@smarthome/models/command-model';
 import Light from '@smarthome/models/light-model';
 
 export interface ILightRepository {

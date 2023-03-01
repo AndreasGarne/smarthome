@@ -15,7 +15,8 @@ export class LightRepository implements ILightRepository {
     }
 
     public async update(lightToUpdate: ILight): Promise<ILight> {
-        const lightFromDb = await Light.findOneAndUpdate<ILight>({ DeviceId: lightToUpdate.DeviceId }, lightToUpdate, { new: true });
+        // console.log(lightToUpdate);
+        const lightFromDb = await Light.findOneAndUpdate<ILight>({ DeviceId: lightToUpdate.DeviceId.toLowerCase() }, lightToUpdate, { new: true });
         // console.log("lightFromDb", lightFromDb);
         // const updatedInfo = { ...lightFromDb, ...lightToUpdate };
         // console.log("updatedLight", updatedInfo);

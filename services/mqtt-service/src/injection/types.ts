@@ -3,7 +3,10 @@ const TYPES = {
     IMqttRouter: Symbol.for("IMqttRouter"),
     IConfiguration: Symbol.for("IConfiguration"),
     ILightRepository: Symbol.for("ILightRepository"),
-    ILightService: Symbol.for("ILightService")
+    ILightService: Symbol.for("ILightService"),
+    IDeviceRepository: Symbol.for("IDeviceRepository"),
+    IZigbeeDeviceController: Symbol.for("IZigbeeDeviceController"),
+    IZigbeeBridgeController: Symbol.for("IZigbeeBridgeController")
 };
 
 export { TYPES };
