@@ -17,7 +17,7 @@ import {
 import { MqttDecorator } from '@smarthome/decorators';
 import { TYPES } from '../injection';
 import { container } from '../injection/inversify.config';
-import { IBaseService } from '../services/base-service';
+import { IBaseController } from '../controllers/base-controller';
 import { ILightService } from '../services';
 
 export interface IMqttRouter { }
@@ -95,10 +95,15 @@ export class MqttRouter implements IMqttRouter {
                 return;
             }
 
-            const routeToCall = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route)?.func;
-            const serviceName = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route)?.neededService;
-            const service = serviceName && this.GetService(serviceName);
-            foundRoute && service && routeToCall && routeToCall(message, ...foundRoute.callProperties, guid, service);
+            const foundRouteInfo = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route);
+            if (!foundRouteInfo) {
+                console.log();
+            }
+            const { functionToCall, controllerName, functionName } = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route)!;
+
+            const controller = this.GetController(controllerName);
+            console.log("gettign there");
+            controller && controller[functionName](message, ...foundRoute.callProperties, guid);
         });
     }
 
@@ -142,10 +147,17 @@ export class MqttRouter implements IMqttRouter {
         };
     }
 
-    private GetService(serviceName: string): IBaseService {
-        switch (serviceName) {
+    private GetController(controllerName: string): any {
+        switch (controllerName) {
             case "light":
-                return container.get<ILightService>(TYPES.ILightService)
+                return container.get<ILightController>(TYPES.ILightController);
+                break;
+            case "zbDevice":
+                return container.get<IZigbeeDeviceController>(TYPES.IZigbeeDeviceController);
+                break;
+            case "zbBridge":
+                return container.get<IZigbeeBridgeController>(TYPES.IZigbeeBridgeController);
+                break;
         }
         throw new Error("");
     }

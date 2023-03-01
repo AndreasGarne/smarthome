@@ -1,11 +1,12 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../dependency-injection";
 import { ILightRepository } from "../repositories";
-import { ILight } from '@smarthome/models';
-import { ICommand, ILightCommand } from "../models";
+import { ILight, ICommand } from '@smarthome/models';
+import { ILightCommand } from "../models";
 import { IMqttClient } from "../mqtt/mqtt-publisher";
 import { ILogger } from "../logger";
 import { CommandNotFoundError } from "../errors/command-not-found-error";
+import { rgbToXY } from "../utils/color-helper";
 
 export interface ILightService {
     add(light: ILight): Promise<void>;
@@ -40,21 +41,24 @@ export class LightService implements ILightService {
 
     private async makeCall(lightId: string, submittedCommand: ILightCommand): Promise<void> {
         const light = await this.lightRepository.getById(lightId);
-        const command = light.Commands?.find(command => command.CommandType === submittedCommand.Name);
-        console.log(command);
+        const command: ICommand = light.Commands?.find(command => command.CommandType === submittedCommand.Name);
 
         if (command === undefined) {
             this.logger.logError(`light with mac: ${light.DeviceId} doesn't have command: ${submittedCommand.Name}`);
             throw new CommandNotFoundError(`light with mac: ${light.DeviceId} doesn't have command: ${submittedCommand.Name}`);
         }
-        const validatedCommand = this.validateCommand(submittedCommand, command);
+        command.Payload = this.validateCommand(submittedCommand, command, light.DeviceId);
 
-        await this.mqttClient.publish(`${validatedCommand.TopicPrefix}/${light.Topic}/${validatedCommand.TopicSuffix}`, validatedCommand.Payload);
+        if (command.IsZigbee) {
+            command.Payload = this.setZigbeePayload(command, light);
+        }
+
+        await this.mqttClient.publish(`${command.TopicPrefix}/${light.Topic}/${command.TopicSuffix}`, command.Payload);
     }
 
-    private validateCommand(submittedCommand: ILightCommand, templateCommand: ICommand): ICommand {
+    private validateCommand(submittedCommand: ILightCommand, templateCommand: ICommand, deviceId: string): string {
         if (templateCommand.Type == "NoArgs")
-            return templateCommand;
+            return templateCommand.Payload;
 
         if (!submittedCommand.Payload)
             throw new Error("Payload required");
@@ -62,15 +66,20 @@ export class LightService implements ILightService {
         if (templateCommand.Type === "ValidatedSingleArg" && !this.validatePayloadByRegex(new RegExp(templateCommand.Validation), submittedCommand.Payload))
             throw new Error("Payload invalid");
 
-        templateCommand.Payload = submittedCommand.Payload;
-
-
-        console.log(templateCommand);
-        return templateCommand;
+        return submittedCommand.Payload;
     }
 
-    validatePayloadByRegex(regex: RegExp, payload: string): boolean {
+    private validatePayloadByRegex(regex: RegExp, payload: string): boolean {
         return regex.test(payload);
+    }
+
+    private setZigbeePayload(zigbeeCommand: ICommand, light: ILight): string {
+        if (zigbeeCommand.IsXYColour) {
+            const xyColour = rgbToXY(zigbeeCommand.Payload);
+            zigbeeCommand.Payload = xyColour;
+        }
+
+        return `{\"Device\":\"${light.DeviceId}\",\"Send\":{\"${zigbeeCommand.ZigbeeCommand}\":\"${zigbeeCommand.Payload}\"}}`;
     }
 
     public async removeById(id: string): Promise<void> {

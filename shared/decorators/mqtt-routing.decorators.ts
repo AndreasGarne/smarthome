@@ -1,17 +1,27 @@
 interface IControllerFunction {
-    func: (...args: any[]) => void,
-    neededService: string
+    functionToCall: (...args: any[]) => void,
+    functionName: string,
+    controllerName: string
 }
 
 export class MqttDecorator {
     static allMqttRoutes: Map<string, IControllerFunction> = new Map();
 
-    static MqttRoute = (decoratorArg: string, serviceInterfaceName: string) => (
+    static MqttRoute = (decoratorArg: string, controllerInterfaceName: string) => (
         target: Object,
         propertyKey: string,
         descriptor: TypedPropertyDescriptor<any>
     ): any => {
-        MqttDecorator.allMqttRoutes.set(decoratorArg, { func: descriptor.value as (...args: any[]) => void, neededService: serviceInterfaceName })
+        // console.log(target);
+        // console.log(propertyKey);
+        // console.log(descriptor);
+        MqttDecorator.allMqttRoutes.set(
+            decoratorArg, 
+            { 
+                functionToCall: descriptor.value as (...args: any[]) => void, 
+                functionName: propertyKey,
+                controllerName: controllerInterfaceName 
+            })
     };
 
 

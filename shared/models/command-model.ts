@@ -8,7 +8,11 @@ export interface ICommand {
     Validation : string,
     Arguments : string,
     TopicPrefix : string,
-    TopicSuffix : string
+    TopicSuffix : string,
+    IsXYColour?: boolean,
+    IsZigbee?: boolean,
+    IsTasmota?: boolean,
+    ZigbeeCommand?: string,
 }
 
 export interface ICommandModel extends ICommand, Document {}
@@ -22,6 +26,10 @@ const commandSchema = new Schema<ICommand>({
     Arguments: { type: String, required: false },
     TopicPrefix: { type: String, required: true },
     TopicSuffix: { type: String, required: true },
+    IsXYColour: { type: Boolean, required: false },
+    IsZigbee: { type: Boolean, required: false },
+    IsTasmota: { type: Boolean, required: false },
+    ZigbeeCommand: { type: String, required: true }
 },
     {
         timestamps: true,

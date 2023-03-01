@@ -2,9 +2,8 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../injection";
 import { ILightRepository } from "../repositories";
 import { ILight } from "@smarthome/models";
-import { IBaseService } from "./base-service";
 
-export interface ILightService extends IBaseService {
+export interface ILightService {
     updateLight(lightDataToUpdate: ILight): Promise<ILight>;
 }
 

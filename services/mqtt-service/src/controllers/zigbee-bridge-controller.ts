@@ -15,21 +15,21 @@ export interface IZigbeeBridgeController {
 @injectable()
 export class ZigbeeBridgeController implements IZigbeeBridgeController {
 
-    // @MqttDecorator.MqttRoute("tele/zbbridge/result")
+    @MqttDecorator.MqttRoute("tele/zbbridge/result", "zbBridge")
     public HandleTelemetryResult(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("flattenedZigbeePayload", flattenZigbeePayload(jsonPayload));
+            console.log("flattenedZigbeePayloadInZBHandleTelemetryResult", flattenZigbeePayload(jsonPayload));
         } catch (error) {
             console.log(error);
         }
     }
 
-    // @MqttDecorator.MqttRoute("stat/zbbridge/result")
+    // @MqttDecorator.MqttRoute("stat/zbbridge/result", "zbBridge")
     public HandleStatusResult(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("flattenedZigbeePayload", flattenZigbeePayload(jsonPayload));
+            console.log("flattenedZigbeePayloadInZBHandleStatusResult", flattenZigbeePayload(jsonPayload));
         } catch (error) {
             console.log(error);
         }
@@ -45,11 +45,11 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
         }
     }
 
-    // @MqttDecorator.MqttRoute("tele/zbbridge/state")
+    @MqttDecorator.MqttRoute("tele/zbbridge/state", "zbBridge")
     public HandleState(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("unflattened zigbee payload", jsonPayload);
+            console.log("unflattened zigbee payload in ZB HandleState", jsonPayload);
         } catch (error) {
             console.log(error);
         }
