@@ -1,0 +1,22 @@
+export interface ILightResponse {
+    Id: string,
+    Name: string,
+    DeviceId: string,
+    ModelId?: string,
+    Manufacturer?: string,
+    Ip?: string,
+    Room?: string,
+    UptimeSec?: number,
+    LinkQuality?: number,
+    Reachable?: boolean,
+    LastSeen?: number,
+    LastSeenEpoch?: number,
+    Power: string,
+    Dimmer: number,
+    Color: string,
+    White: number,
+    MinCT: number,
+    MaxCT: number,
+    CT: number,
+    Commands: string[]    
+}

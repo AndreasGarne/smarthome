@@ -27,7 +27,6 @@ export class LightRepository implements ILightRepository {
     }
 
     public async getAll(): Promise<ILight[]> {
-
         return await this.light.find<ILight>().populate("Commands");
     }
 
