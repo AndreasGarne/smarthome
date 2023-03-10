@@ -2,15 +2,16 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../dependency-injection";
 import { ILightRepository } from "../repositories";
 import { ILight, ICommand } from '@smarthome/models';
-import { ILightCommand } from "../models";
+import { ILightCommand, ILightResponse } from "../models";
 import { IMqttClient } from "../mqtt/mqtt-publisher";
 import { ILogger } from "../logger";
 import { CommandNotFoundError } from "../errors/command-not-found-error";
 import { rgbToXY } from "../utils/color-helper";
+import { MapLightToLightResponse } from '../mappers/light-response-mapper';
 
 export interface ILightService {
     add(light: ILight): Promise<void>;
-    getAll(): Promise<ILight[]>;
+    getAll(): Promise<ILightResponse[]>;
     sendCommand(ids: string[], command: ILightCommand): Promise<void>;
     removeById(id: string): Promise<void>;
 }
@@ -23,8 +24,9 @@ export class LightService implements ILightService {
         @inject(TYPES.ILogger) private readonly logger: ILogger
     ) { }
 
-    public async getAll(): Promise<ILight[]> {
-        return await this.lightRepository.getAll();
+    public async getAll(): Promise<ILightResponse[]> {
+        const lights = await this.lightRepository.getAll();
+        return MapLightToLightResponse(lights);
     }
 
     public async add(light: ILight): Promise<void> {

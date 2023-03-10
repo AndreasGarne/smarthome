@@ -13,7 +13,7 @@ import {
 import { inject } from "inversify";
 import { provideSingleton, TYPES } from "../dependency-injection";
 import { ILight } from '@smarthome/models';
-import { ILightCommand } from "../models";
+import { ILightCommand, ILightResponse } from "../models";
 import { ILightService } from "../services";
 
 @provideSingleton(LightController)
@@ -25,7 +25,7 @@ export class LightController extends Controller {
 
     @Get()
     public async getAll(
-    ): Promise<ILight[]> {
+    ): Promise<ILightResponse[]> {
         return await this.lightService.getAll();
     }
 
