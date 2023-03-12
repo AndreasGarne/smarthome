@@ -10,9 +10,10 @@ import {
     ZigbeeDeviceController
 } from "../controllers";
 import { IMqttRouter, MqttRouter } from '../routes';
-import { IConfiguration, Configuration } from "../configuration";
+import { Configuration } from "../configuration";
 import { ILightService, LightService } from '../services';
 import { DeviceRepository, IDeviceRepository, ILightRepository, LightRepository } from '../repositories';
+import { IConfiguration } from "../models";
 
 const container = new Container();
 container.bind<ILightController>(TYPES.ILightController).to(LightController).inSingletonScope();

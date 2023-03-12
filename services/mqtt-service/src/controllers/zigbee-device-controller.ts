@@ -87,7 +87,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public HandleInfo3(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("unflattened zigbee payload", jsonPayload);
+            // console.log("unflattened zigbee payload", jsonPayload);
         } catch (error) {
             console.log(error);
         }
@@ -96,9 +96,9 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     private async RouteMessage(message: Buffer, correlationId: string) {
         const jsonPayload: IZigbeePayload = JSON.parse(message.toString());
         const flattenedPayload = flattenZigbeePayload(jsonPayload);
-        console.log("flattenedZigbeePayload", flattenedPayload);
+        // console.log("flattenedZigbeePayload", flattenedPayload);
         const cleanedInfo = mapZigbeeDeviceProperties(flattenedPayload);
-        console.log("cleanedInfo", cleanedInfo);
+        // console.log("cleanedInfo", cleanedInfo);
 
         const deviceRepo = container.get<IDeviceRepository>(TYPES.IDeviceRepository);
         const device = await deviceRepo.getByDeviceId(cleanedInfo.DeviceId);
@@ -117,11 +117,9 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
 
         switch (payloadType) {
             case "ZbReceived":
-                console.log("This should be a result");
                 controller["HandleStatusResult"](Buffer.from(JSON.stringify(cleanedInfo)), cleanedInfo.DeviceId, correlationId);
                 break;
             case "ZbInfo":
-                console.log("This should be a status or info thing");
                 controller["HandleStatusState"](
                     Buffer.from(JSON.stringify(cleanedInfo)), 
                     cleanedInfo.DeviceId, 

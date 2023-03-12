@@ -1,1 +1,1 @@
-export { IConfiguration, Configuration } from './configuration';
+export { Configuration } from './configuration';

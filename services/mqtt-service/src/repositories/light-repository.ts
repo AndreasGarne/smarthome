@@ -10,7 +10,6 @@ export interface ILightRepository {
 export class LightRepository implements ILightRepository {
     private light;
     constructor() {
-        console.log("repository getting called");
         this.light = Light;
     }
 

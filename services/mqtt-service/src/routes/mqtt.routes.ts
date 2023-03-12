@@ -2,8 +2,7 @@ import mqtt from 'mqtt';
 import crypto from 'crypto';
 import { injectable, inject } from 'inversify';
 
-import { IConfiguration } from '../configuration';
-import { IRoutingInfo, IResolvedRoute } from '../models';
+import { IRoutingInfo, IResolvedRoute, IMQTTConfiguration } from '../models';
 import {
     ITasmotaController,
     TasmotaController,
@@ -28,10 +27,10 @@ export class MqttRouter implements IMqttRouter {
     private tasmotaController: ITasmotaController;
     private routingInfo: IRoutingInfo[];
 
-    constructor(@inject(TYPES.IConfiguration) private readonly config: IConfiguration) {
-        this.mqttSubscriberClient = mqtt.connect(config.MqttHost, {
-            username: config.MqttUser,
-            password: config.MqttPassword
+    constructor(@inject(TYPES.IConfiguration) private readonly config: IMQTTConfiguration) {
+        this.mqttSubscriberClient = mqtt.connect(this.config.MqttHost, {
+            username: this.config.MqttUser,
+            password: this.config.MqttPassword
         });
 
         this.tasmotaController = new TasmotaController();
