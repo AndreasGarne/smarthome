@@ -11,10 +11,11 @@ import {
     ILightService,
     LightService
 } from '../services';
-import { IConfiguration, Configuration } from '../configuration';
+import { Configuration } from '../configuration';
 import { ILogger, WinstonLogger } from '../logger';
 import { TYPES } from '../dependency-injection';
 import { IMqttClient, MqttClient } from '../mqtt/mqtt-publisher';
+import { IConfiguration } from '../models';
 
 // Create a new container tsoa can use
 const iocContainer = new Container();

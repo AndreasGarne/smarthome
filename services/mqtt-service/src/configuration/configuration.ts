@@ -1,12 +1,5 @@
-import { injectable, inject } from 'inversify';
-
-export interface IConfiguration {
-    MqttHost: string;
-    MqttPort: string;
-    MqttUser: string;
-    MqttPassword: string;
-    ReservedTopicPrefixes: string[];
-}
+import { injectable } from 'inversify';
+import { IConfiguration } from '../models';
 
 @injectable()
 export class Configuration implements IConfiguration {
@@ -15,12 +8,20 @@ export class Configuration implements IConfiguration {
     public MqttUser: string;
     public MqttPassword: string;
     public ReservedTopicPrefixes: string[];
+    public MongoURL: string;
+    public MongoAuthSource: string;
+    public MongoUser: string;
+    public MongoPassword: string;
 
     constructor() {
         this.MqttHost = this.validate("MQTT_HOST");
         this.MqttPort = this.validate("MQTT_PORT");
         this.MqttUser = this.validate("MQTT_USER");
         this.MqttPassword = this.validate("MQTT_PASSWORD");
+        this.MongoURL = this.validate("MONGO_URL");
+        this.MongoAuthSource = this.validate("MONGO_AUTH_SOURCE");
+        this.MongoUser = this.validate("MONGO_USER");
+        this.MongoPassword = this.validate("MONGO_PASSWORD");
         this.ReservedTopicPrefixes = this.validate("RESERVED_TOPIC_PREFIXES").split(",");
     }
 

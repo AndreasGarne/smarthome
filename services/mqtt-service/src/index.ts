@@ -4,16 +4,18 @@ import { container } from './injection/inversify.config';
 import { TYPES } from './injection';
 import { ILightController } from './controllers';
 import { connect } from 'mongoose';
+import { IMongoConfiguration } from './models';
 dotenv.config();
 
-connect("mongodb://192.168.1.199:27014/smarthome", {
-    authSource: "user-data",
-    user: "smarthome-user",
-    pass: "emohtrams",
+const mongoConfig = container.get<IMongoConfiguration>(TYPES.IConfiguration);
+
+connect(mongoConfig.MongoURL, {
+    authSource: mongoConfig.MongoAuthSource,
+    user: mongoConfig.MongoUser,
+    pass: mongoConfig.MongoPassword,
 }).then(() => {
-    const mqttRouter = container.get<IMqttRouter>(TYPES.IMqttRouter);
-})
-    .catch((error) => { console.log(error); });
+    container.get<IMqttRouter>(TYPES.IMqttRouter);
+}).catch((error) => { console.log(error); });
 
 container.get<"ILightController">(TYPES["ILightController"]);
 

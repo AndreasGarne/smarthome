@@ -5,3 +5,6 @@ export { ILwt } from './lwt.models';
 export { IRoutingInfo } from './routing-info.models';
 export { IResolvedRoute } from './resolved-route.models';
 export { IZigbeePayload } from './zigbee-payload-model';
+export { IConfiguration } from './configuration.model';
+export { IMQTTConfiguration } from './mqtt-configuration.model';
+export { IMongoConfiguration } from './mongo-configuration.model';

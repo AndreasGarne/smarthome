@@ -9,9 +9,7 @@ export interface ILightService {
 
 @injectable()
 export class LightService implements ILightService {
-    constructor(@inject(TYPES.ILightRepository) private readonly lightRepo: ILightRepository) {
-        console.log("service getting called");
-    }
+    constructor(@inject(TYPES.ILightRepository) private readonly lightRepo: ILightRepository) { }
 
     public async updateLight(lightDataToUpdate: ILight): Promise<ILight> {
         return await this.lightRepo.update(lightDataToUpdate)
