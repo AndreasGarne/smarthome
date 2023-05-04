@@ -27,7 +27,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public HandleTelemetryResult(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("flattenedZigbeePayload", flattenZigbeePayload(jsonPayload));
+            console.log("ZigbeeDeviceController: HandleTelemetryResult");
         } catch (error) {
             console.log(error);
         }
@@ -37,7 +37,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public HandleStatusResult(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("flattenedZigbeePayload", flattenZigbeePayload(jsonPayload));
+            console.log("ZigbeeDeviceController: HandleStatusResult");
         } catch (error) {
             console.log(error);
         }
@@ -47,6 +47,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public async HandleSensor(message: Buffer, deviceId: string, correlationId: string): Promise<void> {
         try {
             await this.RouteMessage(message, correlationId);
+            console.log("ZigbeeDeviceController: HandleSensor");
             // container.get<ILightController>(TYPES.ILightController).HandleStatusResult(Buffer.from(JSON.stringify(cleanedInfo)), deviceId, correlationId, container.get<ILightService>(TYPES.ILightService));
         } catch (error) {
             console.log(error);
@@ -57,7 +58,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public HandleState(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("unflattened zigbee payload", jsonPayload);
+            console.log("ZigbeeDeviceController: HandleState");
         } catch (error) {
             console.log(error);
         }
@@ -67,7 +68,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public HandleInfo1(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("unflattened zigbee payload", jsonPayload);
+            console.log("ZigbeeDeviceController: HandleInfo1");
         } catch (error) {
             console.log(error);
         }
@@ -77,7 +78,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public HandleInfo2(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("unflattened zigbee payload", jsonPayload);
+            console.log("ZigbeeDeviceController: HandleInfo2");
         } catch (error) {
             console.log(error);
         }
@@ -87,7 +88,7 @@ export class ZigbeeDeviceController implements IZigbeeDeviceController {
     public HandleInfo3(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            // console.log("unflattened zigbee payload", jsonPayload);
+            console.log("ZigbeeDeviceController: HandleInfo3");
         } catch (error) {
             console.log(error);
         }

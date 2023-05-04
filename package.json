@@ -21,6 +21,7 @@
     "shared\\decorators",
     "shared\\models",
     "services\\light-api",
+    "services\\switch-api",
     "services\\mqtt-service"
   ]
 }
