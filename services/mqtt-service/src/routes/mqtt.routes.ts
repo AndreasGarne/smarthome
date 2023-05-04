@@ -69,6 +69,7 @@ export class MqttRouter implements IMqttRouter {
 
     private RegisterMessageHandler(): void {
         this.mqttSubscriberClient.on('message', (topic, message) => {
+            console.log("Incoming topic", topic);
             if (topic.indexOf('/') == -1) {
                 console.log("No / in topic", topic);
                 return;
@@ -101,7 +102,6 @@ export class MqttRouter implements IMqttRouter {
             const { functionToCall, controllerName, functionName } = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route)!;
 
             const controller = this.GetController(controllerName);
-            console.log("gettign there");
             controller && controller[functionName](message, ...foundRoute.callProperties, guid);
         });
     }
