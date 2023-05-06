@@ -1,5 +1,5 @@
-import { ILight } from "@smarthome/models";
-import { IDevice } from "@smarthome/models/device-model";
+import { ILight } from "../models";
+import { IDevice } from "../models/device-model";
 
 export const flattenZigbeePayload = (payload: any): any => {
     if (!isObject(payload)) {

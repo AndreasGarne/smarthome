@@ -12,7 +12,7 @@ import {
 } from "tsoa";
 import { inject } from "inversify";
 import { provideSingleton, TYPES } from "../dependency-injection";
-import { ILight } from '@smarthome/models';
+import { ILight } from '../models';
 import { ILightCommand, ILightResponse } from "../models";
 import { ILightService } from "../services";
 

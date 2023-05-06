@@ -4,3 +4,6 @@ export { ILightCommand } from './light-command-model';
 export { ILightResponse } from './light-response';
 export { IMongoConfiguration } from './mongo-configuration.model';
 export { IConfiguration } from './configuration.model';
+export { ILight } from './light-model';
+export { IDevice } from './device-model';
+export { ICommand } from './command-model';

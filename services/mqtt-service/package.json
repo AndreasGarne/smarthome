@@ -2,7 +2,7 @@
   "name": "@smarthome/mqtt-service",
   "version": "1.0.0",
   "description": "service for parsing mqtt messages from devices and transforming them to standardized models",
-  "main": "index.js",
+  "main": "build/src/index.js",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -29,9 +29,10 @@
     "@smarthome/decorators": "^1.0.0",
     "dotenv": "^16.0.3",
     "inversify": "^6.0.1",
-    "mongoose": "^6.9.3",
+    "mongoose": "^7.1.0",
     "mqtt": "^4.3.7",
     "reflect-metadata": "^0.1.13",
+    "upgrade": "^1.1.0",
     "uuid": "^9.0.0"
   }
 }

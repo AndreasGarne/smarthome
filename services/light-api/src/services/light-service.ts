@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../dependency-injection";
 import { ILightRepository } from "../repositories";
-import { ILight, ICommand } from '@smarthome/models';
+import { ILight, ICommand } from '../models';
 import { ILightCommand, ILightResponse } from "../models";
 import { IMqttClient } from "../mqtt/mqtt-publisher";
 import { ILogger } from "../logger";

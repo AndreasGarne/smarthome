@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
-import { ILight } from "@smarthome/models";
-import Light from '@smarthome/models/light-model';
+import { ILight } from "../models";
+import Light from '../models/light-model';
 
 export interface ILightRepository {
     update(lightToUpdate: ILight): Promise<ILight>;
