@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  mqtt-service:
+    build:
+      context: .
+      dockerfile: ./services/mqtt-service/Dockerfile
+    environment: 
+      - MQTT_HOST=${MQTT_HOST}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_USER=${MQTT_USER}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MONGO_URL=${MONGO_URL}
+      - MONGO_AUTH_SOURCE=${MONGO_AUTH_SOURCE}
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - RESERVED_TOPIC_PREFIXES=${RESERVED_TOPIC_PREFIXES}

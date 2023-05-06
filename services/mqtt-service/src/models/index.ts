@@ -8,3 +8,5 @@ export { IZigbeePayload } from './zigbee-payload-model';
 export { IConfiguration } from './configuration.model';
 export { IMQTTConfiguration } from './mqtt-configuration.model';
 export { IMongoConfiguration } from './mongo-configuration.model';
+export { ILight } from './light-model';
+export { IDevice } from './device-model';

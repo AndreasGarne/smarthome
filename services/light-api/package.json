@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/AndreasGarne/smarthome#readme",
   "dependencies": {
-    "@smarthome/models": "^1.0.0",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

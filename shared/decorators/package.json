@@ -2,8 +2,9 @@
   "name": "@smarthome/decorators",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
+    "build": "tsc --build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/AndreasGarne/smarthome/issues"
   },
-  "homepage": "https://github.com/AndreasGarne/smarthome#readme"
+  "homepage": "https://github.com/AndreasGarne/smarthome#readme",
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
 }

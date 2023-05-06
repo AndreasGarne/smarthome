@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
-import { IDevice } from "@smarthome/models";
-import Device from '@smarthome/models/device-model';
+import { IDevice } from "../models";
+import Device from '../models/device-model';
 
 export interface IDeviceRepository {
     getByDeviceId(deviceId: string): Promise<IDevice | null>;

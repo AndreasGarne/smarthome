@@ -6,12 +6,112 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"ILightResponse": {
+				"properties": {
+					"Id": {
+						"type": "string"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"DeviceId": {
+						"type": "string"
+					},
+					"ModelId": {
+						"type": "string"
+					},
+					"Manufacturer": {
+						"type": "string"
+					},
+					"Ip": {
+						"type": "string"
+					},
+					"Room": {
+						"type": "string"
+					},
+					"UptimeSec": {
+						"type": "number",
+						"format": "double"
+					},
+					"LinkQuality": {
+						"type": "number",
+						"format": "double"
+					},
+					"Reachable": {
+						"type": "boolean"
+					},
+					"LastSeen": {
+						"type": "number",
+						"format": "double"
+					},
+					"LastSeenEpoch": {
+						"type": "number",
+						"format": "double"
+					},
+					"Power": {
+						"type": "string"
+					},
+					"Dimmer": {
+						"type": "number",
+						"format": "double"
+					},
+					"Color": {
+						"type": "string"
+					},
+					"White": {
+						"type": "number",
+						"format": "double"
+					},
+					"MinCT": {
+						"type": "number",
+						"format": "double"
+					},
+					"MaxCT": {
+						"type": "number",
+						"format": "double"
+					},
+					"CT": {
+						"type": "number",
+						"format": "double"
+					},
+					"Commands": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"Id",
+					"Name",
+					"DeviceId",
+					"Power",
+					"Dimmer",
+					"Color",
+					"White",
+					"MinCT",
+					"MaxCT",
+					"CT",
+					"Commands"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ILight": {
 				"properties": {
 					"Name": {
 						"type": "string"
 					},
 					"DeviceId": {
+						"type": "string"
+					},
+					"IEEEAddr": {
+						"type": "string"
+					},
+					"ModelId": {
+						"type": "string"
+					},
+					"Manufacturer": {
 						"type": "string"
 					},
 					"DeviceType": {
@@ -58,6 +158,25 @@
 						"type": "number",
 						"format": "double"
 					},
+					"Endpoint": {
+						"type": "number",
+						"format": "double"
+					},
+					"LinkQuality": {
+						"type": "number",
+						"format": "double"
+					},
+					"Reachable": {
+						"type": "boolean"
+					},
+					"LastSeen": {
+						"type": "number",
+						"format": "double"
+					},
+					"LastSeenEpoch": {
+						"type": "number",
+						"format": "double"
+					},
 					"POWER": {
 						"type": "string"
 					},
@@ -71,7 +190,33 @@
 					"HSBColor": {
 						"type": "string"
 					},
+					"X": {
+						"type": "number",
+						"format": "double"
+					},
+					"Y": {
+						"type": "number",
+						"format": "double"
+					},
+					"ColorMode": {
+						"type": "number",
+						"format": "double"
+					},
+					"RGB": {
+						"type": "string"
+					},
+					"RGBb": {
+						"type": "string"
+					},
 					"White": {
+						"type": "number",
+						"format": "double"
+					},
+					"MinCT": {
+						"type": "number",
+						"format": "double"
+					},
+					"MaxCT": {
 						"type": "number",
 						"format": "double"
 					},
@@ -106,10 +251,8 @@
 					}
 				},
 				"required": [
-					"Name",
 					"DeviceId",
-					"DeviceType",
-					"Topic"
+					"DeviceType"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -155,7 +298,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/ILight"
+										"$ref": "#/components/schemas/ILightResponse"
 									},
 									"type": "array"
 								}

@@ -1,4 +1,4 @@
-import { ILight } from "@smarthome/models";
+import { ILight } from "../models";
 import { ILightResponse } from "../models/light-response";
 import { Document } from "mongoose";
 

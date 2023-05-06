@@ -13,7 +13,8 @@ connect(mongoConfig.MongoURL, {
     authSource: mongoConfig.MongoAuthSource,
     user: mongoConfig.MongoUser,
     pass: mongoConfig.MongoPassword,
-}).then(() => {
+}).then((result) => {
+    console.log("mongo connected");
     container.get<IMqttRouter>(TYPES.IMqttRouter);
 }).catch((error) => { console.log(error); });
 
