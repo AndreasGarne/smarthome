@@ -91,7 +91,7 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
         }
     }
 
-    // @MqttDecorator.MqttRoute("tele/zbbridge/lwt")
+    @MqttDecorator.MqttRoute("tele/zbbridge/lwt", "zbBridge")
     public HandleLwt(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             console.log(message.toString());

@@ -6,7 +6,12 @@ const TYPES = {
     ILightService: Symbol.for("ILightService"),
     IDeviceRepository: Symbol.for("IDeviceRepository"),
     IZigbeeDeviceController: Symbol.for("IZigbeeDeviceController"),
-    IZigbeeBridgeController: Symbol.for("IZigbeeBridgeController")
+    IZigbeeBridgeController: Symbol.for("IZigbeeBridgeController"),
+    IDeviceService: Symbol.for("IDeviceService"),
+    ITermoHygroController: Symbol.for("ITermoHygroController"),
+    IThermoHygroService: Symbol.for("IThermoHygroService"),
+    IThermometerRepository: Symbol.for("IThermometerRepository"),
+    IHygrometerRepository: Symbol.for("IHygrometerRepository"),
 };
 
 export { TYPES };

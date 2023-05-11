@@ -1,18 +1,16 @@
 import { injectable, inject } from 'inversify';
 
-import { IIncomingTasmotaTopic, IsTasmotaLightState, IsTasmotaPowerState, ITasmotaLightState } from '../models'
+import { IsTasmotaLightState, IsTasmotaPowerState } from '../models'
 import { MqttDecorator } from '@smarthome/decorators'
 import { TYPES } from '../injection';
 import { ILightService } from '../services';
-import { container } from '../injection/inversify.config';
-import { IBaseController } from './base-controller';
 
-export interface ILightController extends IBaseController {
-    HandleStatusResult(message: Buffer, deviceId: string, correlationId: string, lightService: ILightService): void;
-    HandleStatusState(message: Buffer, deviceId: string, correlationId: string, lightService: ILightService): void;
-    HandleTelemetryResult(message: Buffer, deviceId: string, correlationId: string, lightService: ILightService): void;
-    HandleTelemetryState(message: Buffer, deviceId: string, correlationId: string, lightService: ILightService): void;
-    HandleLWT(message: Buffer, deviceId: string, correlationId: string, lightService: ILightService): void;
+export interface ILightController {
+    HandleStatusResult(message: Buffer, deviceId: string, correlationId: string): void;
+    HandleStatusState(message: Buffer, deviceId: string, correlationId: string): void;
+    HandleTelemetryResult(message: Buffer, deviceId: string, correlationId: string): void;
+    HandleTelemetryState(message: Buffer, deviceId: string, correlationId: string): void;
+    HandleLWT(message: Buffer, deviceId: string, correlationId: string): void;
 }
 
 @injectable()
