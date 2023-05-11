@@ -10,14 +10,12 @@ import {
     LightController,
     IZigbeeBridgeController,
     ZigbeeBridgeController,
-    IZigbeeDeviceController,
-    ZigbeeDeviceController
 } from '../controllers';
 import { MqttDecorator } from '@smarthome/decorators';
 import { TYPES } from '../injection';
 import { container } from '../injection/inversify.config';
-import { IBaseController } from '../controllers/base-controller';
-import { ILightService } from '../services';
+import { IDeviceService, ILightService } from '../services';
+import { ITermoHygroController, TermoHygroController } from '../termo-hygro/termo-hygro-controller';
 
 export interface IMqttRouter { }
 
@@ -27,7 +25,10 @@ export class MqttRouter implements IMqttRouter {
     private tasmotaController: ITasmotaController;
     private routingInfo: IRoutingInfo[];
 
-    constructor(@inject(TYPES.IConfiguration) private readonly config: IMQTTConfiguration) {
+    constructor(
+        @inject(TYPES.IConfiguration) private readonly config: IMQTTConfiguration,
+        @inject(TYPES.IDeviceService) private readonly deviceService: IDeviceService,
+    ) {
         this.mqttSubscriberClient = mqtt.connect(this.config.MqttHost, {
             username: this.config.MqttUser,
             password: this.config.MqttPassword
@@ -68,42 +69,57 @@ export class MqttRouter implements IMqttRouter {
     }
 
     private RegisterMessageHandler(): void {
-        this.mqttSubscriberClient.on('message', (topic, message) => {
-            console.log("Incoming topic", topic);
-            if (topic.indexOf('/') == -1) {
-                console.log("No / in topic", topic);
-                return;
-            }
+        this.mqttSubscriberClient.on('message', this.MessageHandler);
+    }
 
-            const guid = crypto.randomUUID();
+    private MessageHandler = async (topic: string, message: Buffer) => {
+        // topic = topic.toLowerCase();
+        console.log("Incoming topic", topic);
+        if (topic.indexOf('/') == -1) {
+            console.log("No / in topic", topic);
+            return;
+        }
 
-            let nbrFound = 0;
-            let foundRoute: IResolvedRoute | null = null;
-            for (let routeInfo of this.routingInfo) {
-                let tempFoundRoute = this.FindRouteMatch(routeInfo, topic.toLowerCase());
-                if (tempFoundRoute) {
-                    foundRoute = tempFoundRoute;
-                    nbrFound++;
-                }
-            }
-            if (nbrFound > 1) {
-                console.log(`More than one route matches topic this is bad. Topic: ${topic}`);
-                return;
-            }
-            if (!foundRoute) {
-                console.log(`No matching route for topic: ${topic}`);
-                return;
-            }
+        const guid = crypto.randomUUID();
 
-            const foundRouteInfo = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route);
-            if (!foundRouteInfo) {
-                console.log();
-            }
-            const { functionToCall, controllerName, functionName } = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route)!;
+        const topicParts = topic.split('/');
+        if (topicParts.length === 4 && topicParts[1] === 'zbbridge') {
+            const deviceType = await this.deviceService.getDeviceType(topicParts[2]);
+            topic = topic.replace('zbbridge', deviceType);
+        }
 
-            const controller = this.GetController(controllerName);
-            controller && controller[functionName](message, ...foundRoute.callProperties, guid);
-        });
+        let nbrFound = 0;
+        let foundRoute: IResolvedRoute | null = null;
+        for (let routeInfo of this.routingInfo) {
+            let tempFoundRoute = this.FindRouteMatch(routeInfo, topic.toLowerCase());
+            if (tempFoundRoute) {
+                foundRoute = tempFoundRoute;
+                nbrFound++;
+            }
+        }
+        if (nbrFound > 1) {
+            console.log(`More than one route matches topic this is bad. Topic: ${topic}`);
+            return;
+        }
+        if (!foundRoute) {
+            console.log(`No matching route for topic: ${topic}`);
+            return;
+        }
+
+        const foundRouteInfo = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route);
+        if (!foundRouteInfo) {
+            console.log();
+        }
+        const { functionToCall, controllerName, functionName } = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route)!;
+
+        if (controllerName === "zbDevice") {
+            const [prefix, deviceId, suffix] = foundRoute.callProperties;
+            // this.MessageHandler(`${prefix}/zbbridge/${deviceId}/${suffix}`, message);
+            return;
+        }
+
+        const controller = this.GetController(controllerName);
+        controller && controller[functionName](message, ...foundRoute.callProperties, guid);
     }
 
     private FindRouteMatch(routeInfo: IRoutingInfo, topic: string): IResolvedRoute | null {
@@ -117,7 +133,6 @@ export class MqttRouter implements IMqttRouter {
 
 
         if (routeInfo.artifacts.length === 0) {
-            console.log("route without artifacts. weird");
             return {
                 callProperties: [],
                 route: routeInfo.route
@@ -135,10 +150,12 @@ export class MqttRouter implements IMqttRouter {
             return null;
         }
 
-        const callProperties: string[] = [];
-        for (let artifact of routeInfo.artifacts) {
-            callProperties.push(match.groups[artifact]);
-        }
+        // const callProperties: string[] = [];
+        // for (let artifact of routeInfo.artifacts) {
+        //     callProperties.push(match.groups[artifact]);
+        // }
+
+        const callProperties = routeInfo.artifacts.map(artifact => match!.groups![artifact]);
 
         return {
             route: routeInfo.route,
@@ -150,13 +167,10 @@ export class MqttRouter implements IMqttRouter {
         switch (controllerName) {
             case "light":
                 return container.get<ILightController>(TYPES.ILightController);
-                break;
-            case "zbDevice":
-                return container.get<IZigbeeDeviceController>(TYPES.IZigbeeDeviceController);
-                break;
             case "zbBridge":
                 return container.get<IZigbeeBridgeController>(TYPES.IZigbeeBridgeController);
-                break;
+            case "termoHygro":
+                return container.get<ITermoHygroController>(TYPES.ITermoHygroController);
         }
         throw new Error("");
     }

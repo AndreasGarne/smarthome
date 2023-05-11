@@ -23,7 +23,7 @@ export const mapZigbeeDeviceProperties = <T extends ILight>(payload: any): T => 
     return {
         ...payload,
         POWER: payload.Power,
-        DeviceId: payload.Device.toLowerCase()
+        DeviceId: payload.Device.toLowerCase().replace('0x', ''),
     };
 }
 
