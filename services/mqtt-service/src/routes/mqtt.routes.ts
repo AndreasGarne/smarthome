@@ -16,6 +16,7 @@ import { TYPES } from '../injection';
 import { container } from '../injection/inversify.config';
 import { IDeviceService, ILightService } from '../services';
 import { ITermoHygroController, TermoHygroController } from '../termo-hygro/termo-hygro-controller';
+import { ILogger } from '../utilities/logger';
 
 export interface IMqttRouter { }
 
@@ -28,6 +29,7 @@ export class MqttRouter implements IMqttRouter {
     constructor(
         @inject(TYPES.IConfiguration) private readonly config: IMQTTConfiguration,
         @inject(TYPES.IDeviceService) private readonly deviceService: IDeviceService,
+        @inject(TYPES.ILogger) private readonly logger: ILogger,
     ) {
         this.mqttSubscriberClient = mqtt.connect(this.config.MqttHost, {
             username: this.config.MqttUser,
@@ -36,7 +38,7 @@ export class MqttRouter implements IMqttRouter {
 
         this.tasmotaController = new TasmotaController();
         this.routingInfo = this.SetupRoutingData();
-        // console.log(this.routingInfo);
+        // this.logger.log("debug", this.routingInfo);
 
         this.RegisterConnectHandler();
         this.RegisterMessageHandler();
@@ -44,25 +46,25 @@ export class MqttRouter implements IMqttRouter {
 
     private RegisterConnectHandler(): void {
         this.mqttSubscriberClient.on('connect', () => {
-            console.log("connected to mqtt");
-            this.mqttSubscriberClient.subscribe('tele/+/+/+', function (err) {
+            this.logger.log("info", "connected to mqtt");
+            this.mqttSubscriberClient.subscribe('tele/+/+/+',  (err) => {
                 if (err) {
-                    console.log(`Failed to subscribe to smartbase. Error: ${err}`)
+                    this.logger.log("error", `Failed to subscribe to smartbase. Error: ${err}`)
                 }
             });
-            this.mqttSubscriberClient.subscribe('stat/+/+/+', function (err) {
+            this.mqttSubscriberClient.subscribe('stat/+/+/+', (err) => {
                 if (err) {
-                    console.log(`Failed to subscribe to smartbase. Error: ${err}`)
+                    this.logger.log("error", `Failed to subscribe to smartbase. Error: ${err}`)
                 }
             });
-            this.mqttSubscriberClient.subscribe('tasmota/#', function (err) {
+            this.mqttSubscriberClient.subscribe('tasmota/#',  (err) => {
                 if (err) {
-                    console.log(`Failed to subscribe to smartbase. Error: ${err}`)
+                    this.logger.log("error", `Failed to subscribe to smartbase. Error: ${err}`)
                 }
             });
-            this.mqttSubscriberClient.subscribe('+/zbbridge/+', function (err) {
+            this.mqttSubscriberClient.subscribe('+/zbbridge/+',  (err) => {
                 if (err) {
-                    console.log(`Failed to subscribe to zbbridge. Error: ${err}`)
+                    this.logger.log("error", `Failed to subscribe to zbbridge. Error: ${err}`)
                 }
             });
         });
@@ -74,9 +76,9 @@ export class MqttRouter implements IMqttRouter {
 
     private MessageHandler = async (topic: string, message: Buffer) => {
         // topic = topic.toLowerCase();
-        console.log("Incoming topic", topic);
+        this.logger.log("debug", `Incoming topic: ${topic}`);
         if (topic.indexOf('/') == -1) {
-            console.log("No / in topic", topic);
+            this.logger.log("error", `No / in topic: ${topic}`);
             return;
         }
 
@@ -98,17 +100,17 @@ export class MqttRouter implements IMqttRouter {
             }
         }
         if (nbrFound > 1) {
-            console.log(`More than one route matches topic this is bad. Topic: ${topic}`);
+            this.logger.log("info", `More than one route matches topic this is bad. Topic: ${topic}`);
             return;
         }
         if (!foundRoute) {
-            console.log(`No matching route for topic: ${topic}`);
+            this.logger.log("info", `No matching route for topic: ${topic}`);
             return;
         }
 
         const foundRouteInfo = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route);
         if (!foundRouteInfo) {
-            console.log();
+            this.logger.log("info", "no routes found");
         }
         const { functionToCall, controllerName, functionName } = foundRoute && MqttDecorator.allMqttRoutes.get(foundRoute.route)!;
 
@@ -124,8 +126,8 @@ export class MqttRouter implements IMqttRouter {
 
     private FindRouteMatch(routeInfo: IRoutingInfo, topic: string): IResolvedRoute | null {
         var match = topic.match(routeInfo.regex);
-        // console.log(`Testing topic: ${topic}, with regex: ${routeInfo.regex}`);
-        // console.log(match);
+        // this.logger.log("debug", `Testing topic: ${topic}, with regex: ${routeInfo.regex}`);
+        // this.logger.log("debug", match);
 
         if (match === null) {
             return null;
@@ -140,12 +142,12 @@ export class MqttRouter implements IMqttRouter {
         }
 
         if (!match.groups) {
-            console.log("no groups");
+            this.logger.log("info", "no groups");
             return null;
         }
 
         if (routeInfo.artifacts.length != Object.keys(match!.groups!).length) {
-            console.log("mismatch in expected artifacts and result groups.");
+            this.logger.log("info", "mismatch in expected artifacts and result groups.");
 
             return null;
         }
@@ -179,7 +181,7 @@ export class MqttRouter implements IMqttRouter {
         const routingData: IRoutingInfo[] = [];
         const allRoutes = MqttDecorator.allMqttRoutes.keys();
         for (let route of allRoutes) {
-            console.log(route);
+            this.logger.log("debug", route);
             routingData.push({
                 regex: this.GetRegexForRoute(route),
                 route: route,

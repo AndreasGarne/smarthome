@@ -12,6 +12,7 @@ const TYPES = {
     IThermoHygroService: Symbol.for("IThermoHygroService"),
     IThermometerRepository: Symbol.for("IThermometerRepository"),
     IHygrometerRepository: Symbol.for("IHygrometerRepository"),
+    ILogger: Symbol.for("ILogger"),
 };
 
 export { TYPES };

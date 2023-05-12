@@ -1,7 +1,9 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { ILight } from "../models";
 import Command from '../models/command-model';
 import Light from '../models/light-model';
+import { TYPES } from "../dependency-injection";
+import { ILogger } from "../logger";
 
 export interface ILightRepository {
     getAll(): Promise<ILight[]>;
@@ -14,7 +16,9 @@ export interface ILightRepository {
 export class LightRepository implements ILightRepository {
     private light;
     private command;
-    constructor() { 
+    constructor(
+        @inject(TYPES.ILogger) private readonly logger: ILogger,
+    ) { 
         this.light = Light;
         this.command  = Command;
     }

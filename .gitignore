@@ -82,6 +82,7 @@ typings/
 .nuxt
 dist
 build
+tsoa-build
 
 # Gatsby files
 .cache/

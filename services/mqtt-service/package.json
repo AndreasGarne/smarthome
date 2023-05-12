@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/AndreasGarne/smarthome#readme",
   "devDependencies": {
+    "@types/node": "^20.1.2",
     "@types/typescript": "^2.0.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",

@@ -16,6 +16,7 @@ import { ITermoHygroController, TermoHygroController } from "../termo-hygro/term
 import { IThermoHygroService, ThermoHygroService } from "../termo-hygro/termo-hygro-service";
 import { IThermometerRepository, ThermometerRepository } from "../termo-hygro/thermometer-repository";
 import { HygrometerRepository, IHygrometerRepository } from "../termo-hygro/hygrometer-repository";
+import { ILogger, Logger } from "../utilities/logger";
 
 const container = new Container();
 container.bind<ILightController>(TYPES.ILightController).to(LightController).inSingletonScope();
@@ -30,5 +31,6 @@ container.bind<ITermoHygroController>(TYPES.ITermoHygroController).to(TermoHygro
 container.bind<IThermoHygroService>(TYPES.IThermoHygroService).to(ThermoHygroService).inSingletonScope();
 container.bind<IThermometerRepository>(TYPES.IThermometerRepository).to(ThermometerRepository).inSingletonScope();
 container.bind<IHygrometerRepository>(TYPES.IHygrometerRepository).to(HygrometerRepository).inSingletonScope();
+container.bind<ILogger>(TYPES.ILogger).to(Logger).inSingletonScope();
 
 export { container };
