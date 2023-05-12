@@ -12,6 +12,7 @@ export class Configuration implements IConfiguration {
     public MongoAuthSource: string;
     public MongoUser: string;
     public MongoPassword: string;
+    public LogLevel: string;
 
     constructor() {
         this.MqttHost = this.validate("MQTT_HOST");
@@ -23,6 +24,7 @@ export class Configuration implements IConfiguration {
         this.MongoUser = this.validate("MONGO_USER");
         this.MongoPassword = this.validate("MONGO_PASSWORD");
         this.ReservedTopicPrefixes = this.validate("RESERVED_TOPIC_PREFIXES").split(",");
+        this.LogLevel = this.validate("LOG_LEVEL");
     }
 
     private validate(envToCheck: string): string {

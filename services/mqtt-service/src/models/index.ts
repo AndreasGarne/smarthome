@@ -10,3 +10,4 @@ export { IMQTTConfiguration } from './mqtt-configuration.model';
 export { IMongoConfiguration } from './mongo-configuration.model';
 export { ILight } from './light-model';
 export { IDevice } from './device-model';
+export { ILoggingConfiguration } from './logging-configuration.model';

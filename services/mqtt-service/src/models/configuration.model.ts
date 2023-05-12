@@ -8,4 +8,5 @@ export interface IConfiguration {
     MongoUser: string;
     MongoPassword: string;
     ReservedTopicPrefixes: string[];
+    LogLevel: string;
 }

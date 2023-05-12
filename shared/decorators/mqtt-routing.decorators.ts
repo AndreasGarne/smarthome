@@ -16,13 +16,11 @@ export class MqttDecorator {
         // console.log(propertyKey);
         // console.log(descriptor);
         MqttDecorator.allMqttRoutes.set(
-            decoratorArg, 
-            { 
-                functionToCall: descriptor.value as (...args: any[]) => void, 
+            decoratorArg,
+            {
+                functionToCall: descriptor.value as (...args: any[]) => void,
                 functionName: propertyKey,
-                controllerName: controllerInterfaceName 
+                controllerName: controllerInterfaceName
             })
     };
-
-
 }

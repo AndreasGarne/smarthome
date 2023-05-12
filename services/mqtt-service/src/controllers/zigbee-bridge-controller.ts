@@ -2,6 +2,8 @@ import { injectable, inject } from 'inversify';
 
 import { MqttDecorator } from '@smarthome/decorators'
 import { flattenZigbeePayload } from '../utilities/helpers';
+import { ILogger } from '../utilities/logger';
+import { TYPES } from '../injection';
 
 export interface IZigbeeBridgeController {
     HandleStatusResult(message: Buffer, deviceId: string, correlationId: string): void;
@@ -14,14 +16,16 @@ export interface IZigbeeBridgeController {
 
 @injectable()
 export class ZigbeeBridgeController implements IZigbeeBridgeController {
-
+    constructor(
+        @inject(TYPES.ILogger) private readonly logger: ILogger,
+    ) {};
     @MqttDecorator.MqttRoute("tele/zbbridge/result", "zbBridge")
     public HandleTelemetryResult(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("ZigbeeBridgeController: HandleTelemetryResult");
+            this.logger.log("info", "ZigbeeBridgeController: HandleTelemetryResult");
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 
@@ -29,10 +33,10 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
     public HandleStatusResult(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("ZigbeeBridgeController: HandleStatusResult");
-            // console.log("flattenedZigbeePayloadInZBHandleStatusResult", flattenZigbeePayload(jsonPayload));
+            this.logger.log("debug", "ZigbeeBridgeController: HandleStatusResult");
+            // this.logger.log("debug", "flattenedZigbeePayloadInZBHandleStatusResult", flattenZigbeePayload(jsonPayload));
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 
@@ -40,10 +44,10 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
     public HandleSensor(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("ZigbeeBridgeController: HandleSensor");
-            // console.log("flattenedZigbeePayload", flattenZigbeePayload(jsonPayload));
+            this.logger.log("info", "ZigbeeBridgeController: HandleSensor");
+            // this.logger.log("debug", "flattenedZigbeePayload", flattenZigbeePayload(jsonPayload));
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 
@@ -51,10 +55,10 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
     public HandleState(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("ZigbeeBridgeController: HandleState");
-            // console.log("unflattened zigbee payload in ZB HandleState", jsonPayload);
+            this.logger.log("info", "ZigbeeBridgeController: HandleState");
+            // this.logger.log("debug", "unflattened zigbee payload in ZB HandleState", jsonPayload);
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 
@@ -62,10 +66,10 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
     public HandleInfo1(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("ZigbeeBridgeController: HandleInfo1");
-            // console.log("unflattened zigbee payload", jsonPayload);
+            this.logger.log("info", "ZigbeeBridgeController: HandleInfo1");
+            // this.logger.log("debug", "unflattened zigbee payload", jsonPayload);
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 
@@ -73,10 +77,10 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
     public HandleInfo2(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("ZigbeeBridgeController: HandleInfo2");
-            // console.log("unflattened zigbee payload", jsonPayload);
+            this.logger.log("info", "ZigbeeBridgeController: HandleInfo2");
+            // this.logger.log("debug", "unflattened zigbee payload", jsonPayload);
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 
@@ -84,19 +88,19 @@ export class ZigbeeBridgeController implements IZigbeeBridgeController {
     public HandleInfo3(message: Buffer, deviceId: string, correlationId: string): void {
         try {
             const jsonPayload = JSON.parse(message.toString());
-            console.log("ZigbeeBridgeController: HandleInfo3");
-            // console.log("unflattened zigbee payload", jsonPayload);
+            this.logger.log("info", "ZigbeeBridgeController: HandleInfo3");
+            // this.logger.log("debug", "unflattened zigbee payload", jsonPayload);
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 
     @MqttDecorator.MqttRoute("tele/zbbridge/lwt", "zbBridge")
     public HandleLwt(message: Buffer, deviceId: string, correlationId: string): void {
         try {
-            console.log(message.toString());
+            this.logger.log("info", `ZbBridge LWT state: ${message.toString()}`);
         } catch (error) {
-            console.log(error);
+            this.logger.log("error", error);
         }
     }
 }
