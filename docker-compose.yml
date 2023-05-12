@@ -2,6 +2,7 @@ version: "3"
 
 services:
   mqtt-service:
+    container_name: mqtt-service
     build:
       context: .
       dockerfile: ./services/mqtt-service/Dockerfile
