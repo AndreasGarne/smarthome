@@ -1,13 +1,13 @@
 {
-  "name": "@smarthome/mqtt-service",
+  "name": "device-api",
   "version": "1.0.0",
-  "description": "service for parsing mqtt messages from devices and transforming them to standardized models",
-  "main": "build/src/index.js",
+  "description": "api for devices",
+  "main": "./build/src/index.js",
   "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && tsc",
     "dev": "nodemon ./src/index.ts",
-    "start": "node ./build/index.js"
+    "start": "node ./build/index.js",
+    "clean": "rm -rf ./build"
   },
   "repository": {
     "type": "git",
@@ -20,20 +20,20 @@
   },
   "homepage": "https://github.com/AndreasGarne/smarthome#readme",
   "devDependencies": {
-    "@types/node": "^20.1.2",
+    "@types/node": "^20.1.3",
     "@types/typescript": "^2.0.0",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@smarthome/decorators": "^1.0.0",
+    "@smarthome/logger": "^1.0.0",
+    "body-parser": "^1.20.2",
     "dotenv": "^16.0.3",
-    "inversify": "^6.0.1",
-    "mongoose": "^7.1.0",
+    "express": "^4.18.2",
+    "express-openapi-validator": "^5.0.4",
     "mqtt": "^5.0.1",
-    "reflect-metadata": "^0.1.13",
-    "uuid": "^9.0.0",
-    "winston": "^3.8.2"
+    "swagger-typescript-api": "^13.0.2",
+    "undici": "^5.22.1"
   }
 }

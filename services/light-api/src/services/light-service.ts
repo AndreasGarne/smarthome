@@ -43,6 +43,7 @@ export class LightService implements ILightService {
 
     private async makeCall(lightId: string, submittedCommand: ILightCommand): Promise<void> {
         const light = await this.lightRepository.getById(lightId);
+        console.log(JSON.stringify(light.Commands));
         const command: ICommand = light.Commands?.find(command => command.CommandType === submittedCommand.Name);
 
         if (command === undefined) {

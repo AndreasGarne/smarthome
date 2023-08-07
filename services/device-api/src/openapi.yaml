@@ -1,0 +1,239 @@
+openapi: 3.0.0
+info:
+  description: |
+    API for accessing device actions
+  version: 1.0.0
+  title: Device API
+paths:
+  '/v1/devices':
+    get:
+      x-eov-operation-handler: device-controller
+      operationId: getAll
+      responses:
+        '200':
+          description: All Devices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllDevicesResponseV1'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'  
+    post:  
+      x-eov-operation-handler: device-controller
+      operationId: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDeviceRequestV1'
+      responses:
+        '201':
+          description: Create device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDeviceResponseV1'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'  
+  '/v1/devices/{id}':
+    get:
+      x-eov-operation-handler: device-controller
+      operationId: get
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Device by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDeviceResponseV1'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'    
+    # patch:
+    #   x-eov-operation-handler: storage-controller
+    #   operationId: update
+    #   parameters:
+    #     - name: id
+    #       in: path
+    #       required: true
+    #       schema:
+    #         type: string
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/Device'
+    #   responses:
+    #     '200':
+    #       description: Update device by id
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/UpdateLightResponseV1'
+    #     '400':
+    #       $ref: '#/components/responses/BadRequest'
+    #     '500':
+    #       $ref: '#/components/responses/InternalServerError'
+    #     '501':
+    #       $ref: '#/components/responses/NotImplemented'    
+
+components:
+  schemas:
+    Device:
+      type: object
+      properties:
+        Name:
+          type: string
+        DeviceId:
+          type: string
+        IEEEAddr:
+          type: string
+        ModelId:
+          type: string
+        Manufacturer:
+          type: string
+        DeviceType:
+          $ref: '#/components/schemas/DeviceType'
+        Topic:
+          type: string
+        Ip:
+          type: string
+        Room:
+          type: string
+        GroupTopic:
+          type: string
+        Time:
+          type: string
+        Uptime:
+          type: string
+        UptimeSec:
+          type: number
+        Heap:
+          type: number
+        SleepMode:
+          type: string
+        Sleep:
+          type: number
+        LoadAvg:
+          type: number
+        MqttCount:
+          type: number
+        Endpoint:
+          type: number
+        LinkQuality:
+          type: number
+        Reachable:
+          type: boolean
+        LastSeen:
+          type: number
+        LastSeenEpoch:
+          type: number
+        Commands: 
+          type: array
+
+    DeviceType:
+      type: string
+      enum: [Light, Switch, ZigbeeBridge]
+
+    Command:
+      type: object
+      required:
+        - Name
+        - Payload
+        - Type
+        - Validation
+        - Arguments
+        - TopicPrefix
+        - TopicSuffix
+      properties:
+        CommandType:
+          type: string
+        Name: 
+          type: string
+        Payload: 
+          type: string
+        Type: 
+          type: string
+        Validation: 
+          type: string
+        Arguments:
+          type: string
+        TopicPrefix: 
+          type: string
+        TopicSuffix: 
+          type: string
+        IsXYColour: 
+          type: boolean
+        IsZigbee: 
+          type: boolean
+        IsTasmota: 
+          type: boolean
+        ZigbeeCommand: 
+          type: string   
+        
+    GetDeviceResponseV1:
+      type: object
+    GetAllDevicesResponseV1:
+      type: object
+
+    CreateDeviceRequestV1:
+      type: object
+      required:
+        - Name
+        - DeviceId
+        - DeviceType
+        - Topic
+        - Room
+      properties:
+        Name:
+          type: string
+        DeviceId:
+          type: string
+        DeviceType:
+          $ref: '#/components/schemas/DeviceType'
+        Topic:
+          type: string
+        Room:
+          type: string
+
+    CreateDeviceResponseV1:
+      $ref: '#/components/schemas/Device'
+
+  responses:
+    BadRequest:
+      description: Bad request (400)
+      content:
+        application/json:
+          schema:
+            type: object
+    InternalServerError:
+      description: Internal server error (500)
+      content:
+        application/json:
+          schema:
+            type: object
+    NotImplemented:
+      description: Not implemented (501)
+      content:
+        application/json:
+          schema:
+            type: object

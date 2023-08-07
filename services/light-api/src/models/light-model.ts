@@ -20,11 +20,11 @@ export interface ILight extends IDevice {
     Scheme?: number,
     Fade?: string,
     Speed?: number,
-    LedTable?: string,    
+    LedTable?: string,
     Commands?: any[]
-}
+};
 
-export interface ILightModel extends ILight, Document { }
+export interface ILightModel extends ILight, Document { };
 
 const lightSchema = new Schema<ILight>({
     POWER: { type: String, required: false },
@@ -35,7 +35,7 @@ const lightSchema = new Schema<ILight>({
     Y: { type: Number, required: false },
     ColorMode: { type: Number, required: false },
     RGB: { type: String, required: false },
-    RGBb: { type: String, required: false },    
+    RGBb: { type: String, required: false },
     White: { type: Number, required: false },
     MinCT: { type: Number, required: false },
     MaxCT: { type: Number, required: false },
@@ -44,12 +44,12 @@ const lightSchema = new Schema<ILight>({
     Scheme: { type: Number, required: false },
     Fade: { type: String, required: false },
     Speed: { type: Number, required: false },
-    LedTable: { type: String, required: false },  
+    LedTable: { type: String, required: false },
     Commands: [{ type: Schema.Types.ObjectId, required: false, ref: "Command" }],
 },
-{
-    timestamps: true,
+    {
+        timestamps: true,
         versionKey: false
-}
+    }
 );
 export default Device.discriminator('Light', lightSchema);

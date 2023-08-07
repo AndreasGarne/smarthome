@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import mqtt from 'mqtt';
+import * as mqtt from 'mqtt';
 import { TYPES } from '../dependency-injection';
 import { IMqttConfiguration } from '../models';
 import { ILogger } from '../logger';

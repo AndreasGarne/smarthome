@@ -1,0 +1,1 @@
+export { ZigbeeBridgeController, createZigbeeBridgeController } from './zb-bridge-controller';

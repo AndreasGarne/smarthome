@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "update-all": "npm install --workspaces  --if-present",
+    "outdated-all": "npm outdated --workspaces  --if-present",
     "install-all": "npm install --workspaces  --if-present",
-    "build-all": "npm run build --workspaces --if-present"
+    "build-all": "npm run build --workspaces --if-present",
+    "oas-to-models-all": "node oas-to-models.js --workspaces --if-present"
   },
   "repository": {
     "type": "git",
@@ -21,8 +24,13 @@
   "homepage": "https://github.com/AndreasGarne/smarthome#readme",
   "workspaces": [
     "shared\\decorators",
+    "shared\\logger",
+    "services\\automation-service",
+    "services\\db-service",
+    "services\\device-api",
     "services\\light-api",
     "services\\switch-api",
-    "services\\mqtt-service"
+    "services\\mqtt-service",
+    "services\\zigbee-bridge-service"
   ]
 }

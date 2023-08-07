@@ -19,8 +19,8 @@ export class HygrometerRepository implements IHygrometerRepository {
     public async saveMeasurement(measurement: IHumidityMeasurement): Promise<void> {
         const reading = new this.hygrometerReading(measurement);
         await reading.save();
-        // this.logger.log("info", "lightFromDb", lightFromDb);
+        // this.logger.log("debug", "lightFromDb", lightFromDb);
         // const updatedInfo = { ...lightFromDb, ...lightToUpdate };
-        // this.logger.log("info", "updatedLight", updatedInfo);
+        // this.logger.log("debug", "updatedLight", updatedInfo);
     }
 }

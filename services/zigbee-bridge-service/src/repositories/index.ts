@@ -1,0 +1,1 @@
+export { ZigbeeBridgeRepository, createZigbeeBridgeRepository } from './zb-bridge-repository';
