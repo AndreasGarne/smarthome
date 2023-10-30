@@ -29,7 +29,12 @@ const deviceSchema = new Schema<Device>({
     LastSeen: { type: Number, required: false },
     LastSeenEpoch: { type: Number, required: false },
     Commands: [{ type: Schema.Types.ObjectId, required: false, ref: "Command" }],
-},
+    Protocol: { type: String, required: false },
+    ReceiveWhenIdle: { type: Boolean, required: false },
+    PowerSource: { type: Boolean, required: false },
+    Security: { type: Boolean, required: false },
+    State: { type: String, required: false },
+    },
     {
         timestamps: true,
         versionKey: false

@@ -3,14 +3,16 @@ import { Container } from "inversify";
 import { TYPES } from "./types";
 import {
     ILightController,
+    IRemoteController,
     IZigbeeBridgeController,
     LightController,
+    RemoteController,
     ZigbeeBridgeController,
 } from "../controllers";
 import { IMqttRouter, MqttRouter } from '../routes';
 import { Configuration } from "../configuration";
-import { DeviceService, IDeviceService, ILightService, LightService } from '../services';
-import { DeviceRepository, IDeviceRepository, ILightRepository, LightRepository } from '../repositories';
+import { DeviceService, IDeviceService, ILightService, IRemoteService, LightService, RemoteService } from '../services';
+import { DeviceRepository, IDeviceRepository, ILightRepository, IRemoteRepository, LightRepository, RemoteRepository } from '../repositories';
 import { IConfiguration } from "../models";
 import { ITermoHygroController, TermoHygroController } from "../termo-hygro/termo-hygro-controller";
 import { IThermoHygroService, ThermoHygroService } from "../termo-hygro/termo-hygro-service";
@@ -31,6 +33,9 @@ container.bind<ITermoHygroController>(TYPES.ITermoHygroController).to(TermoHygro
 container.bind<IThermoHygroService>(TYPES.IThermoHygroService).to(ThermoHygroService).inSingletonScope();
 container.bind<IThermometerRepository>(TYPES.IThermometerRepository).to(ThermometerRepository).inSingletonScope();
 container.bind<IHygrometerRepository>(TYPES.IHygrometerRepository).to(HygrometerRepository).inSingletonScope();
+container.bind<IRemoteService>(TYPES.IRemoteService).to(RemoteService).inSingletonScope();
+container.bind<IRemoteRepository>(TYPES.IRemoteRepository).to(RemoteRepository).inSingletonScope();
+container.bind<IRemoteController>(TYPES.IRemoteController).to(RemoteController).inSingletonScope();
 container.bind<ILogger>(TYPES.ILogger).to(Logger).inSingletonScope();
 
 export { container };

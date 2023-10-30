@@ -17,4 +17,4 @@ connect(config.MongoURL, {
 }).then(() => {
     logger.log("info", "mongo connected");
     app.start();
-}).catch((error) => { console.log("error", error); });
+}).catch((error) => { logger.log("error", error); });

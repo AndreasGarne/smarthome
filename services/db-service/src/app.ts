@@ -9,13 +9,14 @@ import * as bodyParser from 'body-parser';
 import { createRouter } from './routes/routes';
 import { lightModel } from './schemas/light';
 import { deviceModel } from './schemas/device';
+import { remoteModel } from './schemas/remote';
 
 export const createApp = (config: configuration, logger: SmarthomeLogger) => {
     const app = express();
     const storageController = createStorageController(config, logger);
 
     const apiPath = path.join(__dirname, 'openapi.yaml');
-    logger.log("info", apiPath);
+    // logger.log("info", apiPath);
     app.use(bodyParser.json());
     app.use(
         OpenApiValidator.middleware({
@@ -26,6 +27,7 @@ export const createApp = (config: configuration, logger: SmarthomeLogger) => {
     );
     const router = createRouter(config, logger, storageController);
     app.use('/v1/lights', router.addRoutes(lightModel));
+    app.use('/v1/remotes', router.addRoutes(remoteModel));
     app.use('/v1/devices', router.addRoutes(deviceModel));
 
     // app.get('/v1/zb-bridges/:zbBridgeId', zbBridgeController.getZigbeeBridges);

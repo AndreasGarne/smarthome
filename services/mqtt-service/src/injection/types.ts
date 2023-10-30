@@ -13,6 +13,9 @@ const TYPES = {
     IThermometerRepository: Symbol.for("IThermometerRepository"),
     IHygrometerRepository: Symbol.for("IHygrometerRepository"),
     ILogger: Symbol.for("ILogger"),
+    IRemoteService: Symbol.for("IRemoteService"),
+    IRemoteRepository: Symbol.for("IRemoteRepository"),
+    IRemoteController: Symbol.for("IRemoteController"),
 };
 
 export { TYPES };

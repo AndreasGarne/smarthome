@@ -119,26 +119,9 @@ export type ZigbeeBridge = Device & {
   AttachedDevices: string[];
 };
 
-export type Remote = Device & {
-  Actions?: Actions;
-};
-
-export type Actions = Record<string, Action>;
-
-export type Action = Record<string, RemoteCommand[]>;
-
-export interface RemoteCommand {
-  id: string;
-  parameters: string[];
-}
-
 export type GetLightResponseV1 = object;
 
 export type GetAllLightsResponseV1 = object;
-
-export type GetRemoteResponseV1 = object;
-
-export type GetAllRemotesResponseV1 = object;
 
 export type CreateLightRequestV1 = Light &
   UtilRequiredKeys<Device, "Name" | "DeviceId" | "DeviceType" | "Topic" | "Room">;

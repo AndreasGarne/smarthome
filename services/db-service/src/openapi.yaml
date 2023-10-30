@@ -15,7 +15,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetLightResponseV1'
+                $ref: '#/components/schemas/GetAllLightsResponseV1'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -74,6 +74,75 @@ paths:
         '501':
           $ref: '#/components/responses/NotImplemented'    
 
+  '/v1/remotes':
+    get:
+      x-eov-operation-handler: storage-controller
+      operationId: getAll
+      responses:
+        '200':
+          description: All Remotes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllRemotesResponseV1'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'    
+  '/v1/remotes/{id}':
+    get:
+      x-eov-operation-handler: storage-controller
+      operationId: get
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Remote by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRemoteResponseV1'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'    
+    patch:
+      x-eov-operation-handler: storage-controller
+      operationId: update
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Remote'
+      responses:
+        '200':
+          description: Update remote by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRemoteResponseV1'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'    
+
   '/v1/devices':
     get:
       x-eov-operation-handler: storage-controller
@@ -123,6 +192,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: type
+          in: query
+          schema:
+            $ref: '#/components/schemas/IdType'
+          required: false
       responses:
         '200':
           description: Device by id
@@ -251,6 +325,11 @@ components:
     Device:
       type: object
       additionalProperties: false
+      # required:
+      #   - Name
+      #   - DeviceId
+      #   - DeviceType
+      #   - Topic
       properties:
         Name:
           type: string
@@ -300,6 +379,16 @@ components:
           type: number
         Commands: 
           type: array
+        Protocol:
+          $ref: '#/components/schemas/Protocol'
+        ReceiveWhenIdle:
+          type: boolean
+        PowerSource:
+          type: boolean
+        Security:
+          type: boolean
+        State:
+          $ref: '#/components/schemas/State'
 
     DeviceTypeUpdateRequestV1:
       type: object
@@ -311,8 +400,19 @@ components:
     
     DeviceType:
       type: string
-      enum: [Light, Switch, ZigbeeBridge]
+      enum: [Light, Switch, ZigbeeBridge, Controller, Device, Unknown]
+    
+    State:
+      type: string
+      enum: [Active, Inactive, Pairing, Waiting]
 
+    Protocol:
+      type: string
+      enum: [Zigbee, Tasmota]
+
+    IdType:
+      type: string
+      enum: [DeviceId, IEEEAddr]
 
     Command:
       type: object
@@ -429,14 +529,47 @@ components:
               items:
                 type: string
 
+    Remote:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Device'
+        - type: object
+          properties:
+            Actions:
+              $ref: '#/components/schemas/Actions'
 
+    Actions:
+      type: object
+      additionalProperties:
+        type: object
+        $ref: '#/components/schemas/Action'
+    Action:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/RemoteCommand'
+
+    RemoteCommand:
+      type: object
+      required:
+        - id
+        - parameters
+      properties:
+        id:
+          type: string
+        parameters:
+          type: array
+          items:
+            type: string
+              
     GetLightResponseV1:
       type: object
     GetAllLightsResponseV1:
       type: object
-    GetDeviceResponseV1:
+    GetRemoteResponseV1:
       type: object
-    GetAllDevicesResponseV1:
+    GetAllRemotesResponseV1:
       type: object
     CreateLightRequestV1:
       allOf:
@@ -473,10 +606,51 @@ components:
       type: object
 
     CreateDeviceRequestV1:
-      $ref: '#/components/schemas/Device'
+      allOf:
+        - $ref: '#/components/schemas/Device'
+          required:
+            - Name 
+            - DeviceId
+            - DeviceType
+            - Room
+            - Topic
+
+    GetDeviceResponseV1:
+      allOf:
+        - $ref: '#/components/schemas/Device'
+          required:
+            - Name 
+            - DeviceId
+            - DeviceType
+            - Room
+            - Topic
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+
+    GetAllDevicesResponseV1:
+      type: array
+      items:
+        $ref: '#/components/schemas/GetDeviceResponseV1'
 
     CreateDeviceResponseV1:
-      $ref: '#/components/schemas/Device'
+      allOf:
+        - $ref: '#/components/schemas/Device'
+          required:
+            - Name 
+            - DeviceId
+            - DeviceType
+            - Room
+            - Topic
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
 
   responses:
     BadRequest:

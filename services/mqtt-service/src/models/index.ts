@@ -11,3 +11,4 @@ export { IMongoConfiguration } from './mongo-configuration.model';
 export { ILight } from './light-model';
 export { IDevice } from './device-model';
 export { ILoggingConfiguration } from './logging-configuration.model';
+export { RemoteControlMessage, RemoteControlPayload, remoteControlMessageSchema, remoteControlPayloadSchema  } from './remote-control-message.model';

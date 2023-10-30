@@ -5,6 +5,7 @@ import { createZigbeeBridgeRepository } from "./repositories";
 import { SmarthomeLogger } from "@smarthome/logger";
 import { createStatResultService, createTeleLwtService, createTeleResultService, createTeleStateService } from "./services";
 import { createStatStatusService } from "./services/stat-status-service";
+import { createDeviceRepository } from "./repositories/device-repository";
 
 export interface mqttApp {
     start(): void;
@@ -17,8 +18,9 @@ export const createMqttApp = (config: configuration, logger: SmarthomeLogger): m
         password: config.MqttPassword
     });
     const zbBridgeRepo = createZigbeeBridgeRepository(config);
+    const deviceRepo = createDeviceRepository(config);
     const teleStateService = createTeleStateService(zbBridgeRepo, logger);
-    const teleResultService = createTeleResultService(zbBridgeRepo, logger);
+    const teleResultService = createTeleResultService(zbBridgeRepo, deviceRepo, logger);
     const statResultService = createStatResultService(zbBridgeRepo, logger);
     const statStatusService = createStatStatusService(zbBridgeRepo, logger);
     const teleLwtService = createTeleLwtService(zbBridgeRepo, logger);

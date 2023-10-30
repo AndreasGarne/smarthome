@@ -21,7 +21,7 @@ export const createZigbeeBridgeController = (
         const topicParts = topic.split('/');
         const prefix = topicParts[0].toLowerCase();
         const suffix = topicParts[2].toLowerCase();
-        let parsedMessage: {[key:string] : any } | string;
+        // let parsedMessage: {[key:string] : any } | string;
         try {
             switch (`${prefix}-${suffix}`) {
                 case 'tele-state': 
@@ -29,10 +29,10 @@ export const createZigbeeBridgeController = (
                     break;
                 case 'tele-result': 
                     teleResultService.handleMessage(JSON.parse(message.toString()));
-                break;
+                    break;
                 case 'stat-result': 
                     statResultService.handleMessage(JSON.parse(message.toString()));
-                break;
+                    break;
                 case 'stat-status': 
                 case 'stat-status1': 
                 case 'stat-status2': 

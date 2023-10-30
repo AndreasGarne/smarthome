@@ -77,13 +77,14 @@ export const createStorageController = (
     (model: Model<any>, populate?: string[]) =>
     (req: Request, res: Response, next: NextFunction) => {
       const id = req.params.id;
+      const idParam = <string>req.query.type ?? '_id';
       logger.log(
         "debug",
-        `Getting document from ${model.modelName} by id: ${id}`
+        `Getting document from ${model.modelName} by ${idParam}: ${id}`
       );
-      logger.log("debug", req.params.id);
+      // logger.log("debug", req.params.id);
       model
-        .findOne<Document>({ _id: id })
+        .findOne<Document>({ [idParam]: id.toLowerCase() })
         .populate(populate || [])
         .then((result) => {
           if (!result) {

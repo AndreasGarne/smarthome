@@ -14,7 +14,7 @@ export const createStatResultService = (zbBridgeRepo: ZigbeeBridgeRepository, lo
             return;
         }
 
-        logger.log('error', `unrecognized message in STAT/RESULT handler.`);// message: ${JSON.stringify(message, null, 0)}`);
+        logger.log('error', `unrecognized message in STAT/RESULT handler. message: ${JSON.stringify(message, null, 0)}`);
     };
 
     const handleBridgeState = (bridgeState: BridgeStateMessage) => {

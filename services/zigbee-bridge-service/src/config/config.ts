@@ -8,6 +8,7 @@ export interface configuration {
     MongoUser: string;
     MongoPassword: string;
     LogLevel: string;
+    StorageApiUrl: string;
 }
 
 export const createConfig = (): configuration => {
@@ -21,6 +22,7 @@ export const createConfig = (): configuration => {
         MongoUser: validate("MONGO_USER"),
         MongoPassword: validate("MONGO_PASSWORD"),
         LogLevel: validate("LOG_LEVEL"),
+        StorageApiUrl: validate("STORAGE_API_URL"),
     }
 }
 
